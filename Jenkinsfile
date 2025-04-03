@@ -28,7 +28,7 @@
         }
     }
 }*/
-pipeline {
+/*pipeline {
   agent any
 
   environment {
@@ -68,5 +68,41 @@ pipeline {
       }
     }
   }
+}*/
+pipeline {
+  agent any
+
+  environment {
+    DOCKER_HUB_USERNAME = 'tharushi104'
+    DOCKER_CREDENTIALS = credentials('dockerhub-creds')
+  }
+
+  stages {
+    stage('Build Docker Images') {
+      steps {
+        sh 'docker build -t $DOCKER_HUB_USERNAME/backend ./backend'
+        sh 'docker build -t $DOCKER_HUB_USERNAME/frontend ./frontend'
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        script {
+          docker.withRegistry('', DOCKER_CREDENTIALS) {
+            sh 'docker push $DOCKER_HUB_USERNAME/backend'
+            sh 'docker push $DOCKER_HUB_USERNAME/frontend'
+          }
+        }
+      }
+    }
+
+    stage('Deploy via Docker Compose') {
+      steps {
+        sh 'docker-compose down || true'
+        sh 'docker-compose up -d --build'
+      }
+    }
+  }
 }
+
 
