@@ -14,19 +14,18 @@
     #  - "8081:80" 
 
 
+version: '3'
 services:
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile-backend
+      context: ./backend  # Adjust to the correct path if needed
+      dockerfile: Dockerfile-backend  # Specify the correct Dockerfile name
     ports:
       - "5001:5001"
     env_file:
-      - ./backend/.env
+      - backend/.env  # Make sure this points to the correct location of the .env file
 
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile-frontend
+    image: tharushi104/frontend
     ports:
       - "8081:80"
