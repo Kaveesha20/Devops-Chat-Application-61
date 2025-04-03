@@ -8,4 +8,4 @@ services:
   frontend:
     image: tharushi104/frontend
     ports:
-      - "8080:80" 
+      - "8081:80" 
