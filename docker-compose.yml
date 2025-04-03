@@ -3,7 +3,7 @@ services:
   backend:
     image: tharushi104/backend
     ports:
-      - "5000:5000"
+      - "5001:5001"
 
   frontend:
     image: tharushi104/frontend
