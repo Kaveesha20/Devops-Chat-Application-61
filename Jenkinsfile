@@ -131,12 +131,11 @@ pipeline {
     DOCKER_CREDENTIALS = credentials('docker-hub-credentials') // Your Jenkins credential ID
   }
 
-  stages {
-    stage('Clone Repo') {
-      steps {
-        git 'https://github.com/Kaveesha20/Devops-Chat-Application-61.git'
-      }
-    }
+  stage('Clone Repo') {
+  steps {
+    git branch: 'develop', url: 'https://github.com/Kaveesha20/Devops-Chat-Application-61.git'
+  }
+}
 
     stage('Build Docker Images') {
       steps {
