@@ -80,8 +80,8 @@ pipeline {
   stages {
     stage('Build Docker Images') {
       steps {
-        sh 'docker build -t $tharushi104/backend ./backend'
-        sh 'docker build -t $tharushi104/frontend ./frontend'
+        sh 'docker build -t ${DOCKER_HUB_USERNAME}/backend ./backend'
+        sh 'docker build -t ${DOCKER_HUB_USERNAME}/frontend ./frontend'
       }
     }
 
@@ -89,8 +89,8 @@ pipeline {
       steps {
         script {
           docker.withRegistry('', DOCKER_CREDENTIALS) {
-            sh 'docker push $tharushi104/backend'
-            sh 'docker push $tharushi104/frontend'
+            sh 'docker push ${DOCKER_HUB_USERNAME}/backend'
+            sh 'docker push ${DOCKER_HUB_USERNAME}/frontend'
           }
         }
       }
@@ -104,5 +104,3 @@ pipeline {
     }
   }
 }
-
-
