@@ -1,0 +1,11 @@
+version: '3'
+services:
+  backend:
+    image: tharushi104/backend
+    ports:
+      - "5000:5000"
+
+  frontend:
+    image: tharushi104/frontend
+    ports:
+      - "80:80"
