@@ -65,8 +65,8 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS) {
-            sh "docker push $DOCKER_HUB_USERNAME/backend"
-            sh "docker push $DOCKER_HUB_USERNAME/frontend"
+            sh "docker push $kaveesha20/backend"
+            sh "docker push $kaveesha20/frontend"
           }
         }
       }
