@@ -109,7 +109,7 @@ pipeline {
 
   environment {
     DOCKER_HUB_USERNAME = 'tharushi104'
-    DOCKER_CREDENTIALS = credentials('dockerhub-creds')
+    DOCKER_CREDENTIALS = 'dockerhub-creds' // Just the ID, not actual creds
   }
 
   stages {
@@ -139,4 +139,3 @@ pipeline {
     }
   }
 }
-
