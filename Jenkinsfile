@@ -1,4 +1,4 @@
-pipeline {
+/*pipeline {
     agent any
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
@@ -27,4 +27,46 @@ pipeline {
             }
         }
     }
+}*/
+pipeline {
+  agent any
+
+  environment {
+    DOCKER_HUB_USERNAME = 'tharushi104'  // change this
+    DOCKER_CREDENTIALS = credentials('dockerhub-creds')
+    //DOCKER_CREDENTIALS_ID= 'docker-hub-credentials'
+  }
+
+  stages {
+    stage('Clone Repo') {
+      steps {
+        git 'https://github.com/Kaveesha20/Devops-Chat-Application-61.git' // change this
+      }
+    }
+
+    stage('Build Docker Images') {
+      steps {
+        sh 'docker build -t $tharushi104/backend ./backend'
+        sh 'docker build -t $tharushi104/frontend ./frontend'
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        script {
+          docker.withRegistry('', DOCKER_CREDENTIALS) {
+            sh 'docker push $tharushi104/backend'
+            sh 'docker push $tharushi104/frontend'
+          }
+        }
+      }
+    }
+
+    stage('Deploy via Docker Compose') {
+      steps {
+        sh 'docker-compose -f docker-compose.yml up -d --build'
+      }
+    }
+  }
 }
+
