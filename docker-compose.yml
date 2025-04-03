@@ -13,13 +13,11 @@
     #ports:
     #  - "8081:80" 
 
-
 version: '3'
 services:
   backend:
     build:
-      context: ./backend  # Adjust to the correct path if needed
-      dockerfile: Dockerfile-backend  # Specify the correct Dockerfile name
+      context: ./backend  # Path to the backend directory
     ports:
       - "5001:5001"
     env_file:
