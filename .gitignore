@@ -54,7 +54,7 @@ data/
 
 # Docker files
 docker-compose.override.yml
-docker-compose.yml
+# docker-compose.yml
 .Dockerfile
 
 # IDE/editor settings
