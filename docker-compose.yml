@@ -46,23 +46,12 @@
 version: '3.8'
 
 services:
-  mongo:
-    image: mongo:6
-    container_name: mongo_cicd
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
   backend:
     image: kaveesha20/backend  # Pull from Docker Hub
     container_name: mern-backend
     restart: always
     ports:
       - "5000:5000"
-    depends_on:
-      - mongo
     environment:
       - MONGO_URI=mongodb+srv://kaveeshasharadi:F4vwmspFjqwKdsK1@cluster0.tp8y5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
@@ -75,4 +64,4 @@ services:
     depends_on:
       - backend
     environment:
-      - VITE_API_BASE_URL=http://16.171.18.112:5000
+      - VITE_API_BASE_URL=http://16.171.18.112:5001
