@@ -38,47 +38,47 @@
 //   }
 // }
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    DOCKER_HUB_USERNAME = 'kaveesha20'
-    DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
-  }
-
-  stages {
-    stage('Clone Repo') {
-      steps {
-        git branch: 'develop', url: 'https://github.com/Kaveesha20/Devops-Chat-Application-61.git'
-      }
+    environment {
+        DOCKER_HUB_USERNAME = 'kaveesha20'
+        DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
     }
 
-    stage('Build Docker Images') {
-      steps {
-        bat "docker build -t ${DOCKER_HUB_USERNAME}/backend ./backend"
-        bat "docker build -t ${DOCKER_HUB_USERNAME}/frontend ./frontend"
-      }
-    }
-
-    stage('Push Docker Images to Docker Hub') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-          bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
-          bat "docker push ${DOCKER_HUB_USERNAME}/backend"
-          bat "docker push ${DOCKER_HUB_USERNAME}/frontend"
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'develop', url: 'https://github.com/Kaveesha20/Devops-Chat-Application-61.git'
+            }
         }
-      }
-    }
 
-    stage('Deploy to AWS EC2') {
-      steps {
-        withCredentials([file(credentialsId: 'ec2-private-key', variable: 'PEM_KEY')]) {
-          // Copy docker-compose.yml to EC2 instance
-                    sh "scp -i **** -o StrictHostKeyChecking=no ${WORKSPACE_PATH}/docker-compose.yml ec2-user@16.171.18.112:/home/ec2-user"
-          
-          // SSH into EC2 and run docker-compose to deploy the app
-          bat 'ssh -i %PEM_KEY% -o StrictHostKeyChecking=no ec2-user@16.171.18.112 "docker-compose -f /home/ec2-user/docker-compose.yml up -d --build"'
+        stage('Build Docker Images') {
+            steps {
+                sh "docker build -t ${DOCKER_HUB_USERNAME}/backend ./backend"
+                sh "docker build -t ${DOCKER_HUB_USERNAME}/frontend ./frontend"
+            }
         }
-      }
+
+        stage('Push Docker Images to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    sh "docker push ${DOCKER_HUB_USERNAME}/backend"
+                    sh "docker push ${DOCKER_HUB_USERNAME}/frontend"
+                }
+            }
+        }
+
+        stage('Deploy to AWS EC2') {
+            steps {
+                withCredentials([file(credentialsId: 'ec2-private-key', variable: 'PEM_KEY')]) {
+                    // Copy docker-compose.yml to EC2 instance
+                    sh "scp -i ${PEM_KEY} -o StrictHostKeyChecking=no ${WORKSPACE}/docker-compose.yml ec2-user@16.171.18.112:/home/ec2-user"
+
+                    // SSH into EC2 and run docker-compose to deploy the app
+                    sh "ssh -i ${PEM_KEY} -o StrictHostKeyChecking=no ec2-user@16.171.18.112 'docker-compose -f /home/ec2-user/docker-compose.yml up -d --build'"
+                }
+            }
+        }
     }
-  }
 }
