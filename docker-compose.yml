@@ -1,3 +1,48 @@
+# version: '3.8'
+
+# services:
+#   mongo:
+#     image: mongo:6
+#     container_name: mongo_cicd
+#     restart: always
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongo-data:/data/db
+
+#   backend:
+#     build:
+#       context: ./backend
+#     container_name: mern-backend
+#     restart: always
+#     ports:
+#       - "5000:5000"
+#     depends_on:
+#       - mongo
+#     environment:
+#       - MONGO_URI=mongodb+srv://kaveeshasharadi:F4vwmspFjqwKdsK1@cluster0.tp8y5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+#     volumes:
+#       - ./backend:/app
+#       - /app/node_modules
+
+#   frontend:
+#     build:
+#       context: ./frontend
+#     container_name: mern-frontend
+#     restart: always
+#     ports:
+#       - "5173:5173"  # Fixed port mapping for Vite
+#     depends_on:
+#       - backend
+#     environment:
+#       - VITE_API_BASE_URL=http://localhost:5001  # Ensure API calls work
+#     volumes:
+#       - ./frontend:/app
+#       - /app/node_modules
+#     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]  # Ensures Vite binds to all network interfaces
+
+# volumes:
+#   mongo-data:
 version: '3.8'
 
 services:
@@ -11,8 +56,7 @@ services:
       - mongo-data:/data/db
 
   backend:
-    build:
-      context: ./backend
+    image: kaveesha20/backend  # Pull from Docker Hub
     container_name: mern-backend
     restart: always
     ports:
@@ -21,25 +65,14 @@ services:
       - mongo
     environment:
       - MONGO_URI=mongodb+srv://kaveeshasharadi:F4vwmspFjqwKdsK1@cluster0.tp8y5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
 
   frontend:
-    build:
-      context: ./frontend
+    image: kaveesha20/frontend  # Pull from Docker Hub
     container_name: mern-frontend
     restart: always
     ports:
-      - "5173:5173"  # Fixed port mapping for Vite
+      - "80:80"  # For production, you can expose via port 80
     depends_on:
       - backend
     environment:
-      - VITE_API_BASE_URL=http://localhost:5001  # Ensure API calls work
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]  # Ensures Vite binds to all network interfaces
-
-volumes:
-  mongo-data:
+      - VITE_API_BASE_URL=http://16.171.18.112:5000
