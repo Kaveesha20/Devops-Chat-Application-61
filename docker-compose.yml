@@ -43,25 +43,23 @@
 
 # volumes:
 #   mongo-data:
-version: '3.8'
-
 services:
   backend:
-    image: kaveesha20/backend  # Pull from Docker Hub
+    image: kaveesha20/backend
     container_name: mern-backend
     restart: always
     ports:
-      - "5000:5000"
-    environment:
-      - MONGO_URI=mongodb+srv://kaveeshasharadi:F4vwmspFjqwKdsK1@cluster0.tp8y5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - "5001:5001"
+    env_file:
+      - ./backend/.env  # path updated
 
   frontend:
-    image: kaveesha20/frontend  # Pull from Docker Hub
+    image: kaveesha20/frontend
     container_name: mern-frontend
     restart: always
     ports:
-      - "80:80"  # For production, you can expose via port 80
+      - "5173:5173"
     depends_on:
       - backend
     environment:
-      - VITE_API_BASE_URL=http://16.171.18.112:5001
+      - VITE_API_BASE_URL=http://localhost:5000

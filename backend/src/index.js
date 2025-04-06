@@ -27,7 +27,9 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
-
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
@@ -41,13 +43,3 @@ server.listen(PORT, () => {
   connectDB();
 });
 
-// connectDB()
-//   .then(() => {
-//     server.listen(PORT, () => {
-//       console.log(`Server is running on PORT: ${PORT}`);
-//     });
-//   })
-//   .catch((err) => {
-//     console.error("MongoDB Connection Failed:", err);
-//     process.exit(1);
-//   });
