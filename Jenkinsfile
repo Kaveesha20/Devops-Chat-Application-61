@@ -73,7 +73,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'ec2-private-key', variable: 'PEM_KEY')]) {
                     // Copy docker-compose.yml to EC2 instance
-                    bat "scp -i ${PEM_KEY} -o StrictHostKeyChecking=no ${WORKSPACE}/docker-compose.yml ec2-user@16.171.18.112:/home/ec2-user"
+                    bat "scp -i **** -o StrictHostKeyChecking=no "C:\ProgramData\Jenkins\.jenkins\workspace\New CI,CD pipeline\docker-compose.yml" ec2-user@16.171.18.112:/home/ec2-user"
 
                     // SSH into EC2 and run docker-compose to deploy the app
                     bat "ssh -i ${PEM_KEY} -o StrictHostKeyChecking=no ec2-user@16.171.18.112 'docker-compose -f /home/ec2-user/docker-compose.yml up -d --build'"
