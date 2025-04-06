@@ -35,7 +35,7 @@ services:
     depends_on:
       - backend
     environment:
-      - VITE_API_BASE_URL=http://localhost:5000  # Ensure API calls work
+      - VITE_API_BASE_URL=http://localhost:5001  # Ensure API calls work
     volumes:
       - ./frontend:/app
       - /app/node_modules
